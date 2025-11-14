@@ -39,9 +39,9 @@ export const getImageUrl = (imagePath: string): string => {
   // Remove leading slash if present
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
   
-  // Production environment
+  // Production environment - Use environment variable
   if (import.meta.env.PROD) {
-    return `https://backend.shilpgroup.com${cleanPath}`;
+    return `${import.meta.env.VITE_IMAGE_BASE_URL || 'https://admin.shilpgroup.com'}${cleanPath}`;
   }
   
   // Development environment - match API base URL

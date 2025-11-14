@@ -13,8 +13,8 @@
 - **Server Directory**: (जैसे: ./public_html/ या ./public_html/admin/)
 
 ### Domain Information:
-- **API Base URL**: https://backend.shilpgroup.com (या आपका actual API URL)
-- **Image Base URL**: https://backend.shilpgroup.com (या आपका actual domain)
+- **API Base URL**: https://backend.shilpgroup.com (Backend API के लिए)
+- **Image Base URL**: https://admin.shilpgroup.com (Images serve करने के लिए)
 
 ## 🔑 **Step 1: GitHub Secrets Setup**
 
@@ -34,7 +34,7 @@ CPANEL_FTP_PASSWORD=your-cpanel-password
 ```
 CPANEL_SERVER_DIR=./public_html/
 VITE_API_BASE_URL=https://backend.shilpgroup.com
-VITE_IMAGE_BASE_URL=https://backend.shilpgroup.com
+VITE_IMAGE_BASE_URL=https://admin.shilpgroup.com
 ```
 
 ## 🚀 **Step 2: Deploy Process**

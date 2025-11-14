@@ -34,7 +34,7 @@ jobs:
       env:
         NODE_ENV: production
         VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || 'https://backend.shilpgroup.com' }}
-        VITE_IMAGE_BASE_URL: ${{ secrets.VITE_IMAGE_BASE_URL || 'https://backend.shilpgroup.com' }}
+        VITE_IMAGE_BASE_URL: ${{ secrets.VITE_IMAGE_BASE_URL || 'https://admin.shilpgroup.com' }}
         VITE_APP_NAME: "Shilp Admin Panel"
         VITE_APP_VERSION: "1.0.0"
     
