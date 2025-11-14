@@ -6,7 +6,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Production builds
-dist/
+# dist/ - commented out for cPanel deployment
 build/
 
 # Environment variables
@@ -15,7 +15,7 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
-
+.env.production
 # IDE and editor files
 .vscode/
 .idea/
