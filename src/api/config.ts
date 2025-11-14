@@ -6,7 +6,7 @@ import type { AxiosRequestConfig } from 'axios';
 const getBaseUrl = (): string => {
   // Production environment - Use environment variable
   if (import.meta.env.PROD) {
-    return import.meta.env.VITE_API_BASE_URL || 'https://mail.shilpgroup.com';
+    return import.meta.env.VITE_API_BASE_URL || 'https://backend.shilpgroup.com';
   }
   
   // Development environment - Dynamic detection
@@ -41,7 +41,7 @@ export const getImageUrl = (imagePath: string): string => {
   
   // Production environment
   if (import.meta.env.PROD) {
-    return `https://mail.shilpgroup.com${cleanPath}`;
+    return `https://backend.shilpgroup.com${cleanPath}`;
   }
   
   // Development environment - match API base URL

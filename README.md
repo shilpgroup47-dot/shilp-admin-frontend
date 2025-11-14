@@ -15,67 +15,45 @@ npm run dev
 npm run build:prod
 ```
 
-## 🌐 cPanel Deployment Guide
+## 🚀 Quick Deployment
 
-### Method 1: Manual Deployment (Recommended for First Setup)
+### Super Quick Deploy (One Command):
+```bash
+npm run deploy:quick
+```
 
-1. **Build the project locally:**
-   ```bash
-   ./deploy-cpanel.sh
-   ```
+### Interactive Deploy:
+```bash
+npm run deploy:auto
+# or
+./deploy.sh
+```
 
-2. **Upload to cPanel:**
-   - Login to your cPanel
-   - Go to File Manager
-   - Navigate to `public_html` directory
-   - Upload all files from the `dist` folder
-   - Make sure `.htaccess` file is uploaded
+### Manual Deploy:
+```bash
+git add .
+git commit -m "Your message"
+git push origin main
+```
 
-3. **Set Environment Variables in cPanel:**
-   - Go to Node.js Setup in cPanel
-   - Add environment variables:
-     ```
-     VITE_API_BASE_URL=https://your-domain.com
-     VITE_IMAGE_BASE_URL=https://your-domain.com
-     VITE_APP_NAME=Shilp Admin Panel
-     ```
+## 🔧 First Time Setup
 
-### Method 2: Automatic Deployment with GitHub Actions
+### 1. GitHub Secrets Setup:
+Go to Repository → Settings → Secrets → Add these:
 
-1. **Set up GitHub Secrets:**
-   Go to your GitHub repository → Settings → Secrets and variables → Actions
-   
-   Add these secrets:
-   ```
-   CPANEL_FTP_SERVER=your-cpanel-server.com
-   CPANEL_FTP_USERNAME=your-cpanel-username
-   CPANEL_FTP_PASSWORD=your-cpanel-password
-   VITE_API_BASE_URL=https://your-domain.com
-   VITE_IMAGE_BASE_URL=https://your-domain.com
-   ```
+```
+CPANEL_FTP_SERVER=your-ftp-server.com
+CPANEL_FTP_USERNAME=your-cpanel-username
+CPANEL_FTP_PASSWORD=your-cpanel-password
+CPANEL_SERVER_DIR=./public_html/
+```
 
-2. **Push to main branch:**
-   ```bash
-   git add .
-   git commit -m "Setup for cPanel deployment"
-   git push origin main
-   ```
+### 2. Deploy:
+```bash
+npm run deploy:quick
+```
 
-### cPanel Node.js Setup
-
-1. **Enable Node.js in cPanel:**
-   - Go to "Node.js Setup" in cPanel
-   - Click "Create Application"
-   - Select Node.js version (18.x recommended)
-   - Set Application root: `public_html`
-   - Set Application URL: your domain
-   - Set Application startup file: `index.html`
-
-2. **Install dependencies in cPanel:**
-   ```bash
-   cd public_html
-   npm install --production
-   ```
+**That's it!** 🎉 Your app will be live in 2-3 minutes.
 
 ## 🔧 Configuration
 
