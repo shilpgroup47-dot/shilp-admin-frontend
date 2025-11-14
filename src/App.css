@@ -1,0 +1,30 @@
+/* Clean Admin Panel Styles */
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Responsive classes for clean layout */
+@media (min-width: 1024px) {
+  .lg\\:hidden {
+    display: none !important;
+  }
+  
+  .lg\\:block {
+    display: block !important;
+  }
+  
+  .lg\\:transform-none {
+    transform: none !important;
+  }
+  
+  .lg\\:translate-x-0 {
+    transform: translateX(0) !important;
+  }
+}
