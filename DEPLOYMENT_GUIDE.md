@@ -25,14 +25,15 @@
 
 ### Required Secrets:
 ```
-CPANEL_FTP_SERVER=ftp.yourdomain.com
-CPANEL_FTP_USERNAME=your-cpanel-username
-CPANEL_FTP_PASSWORD=your-cpanel-password
+CPANEL_FTP_SERVER=ftp.shilpgroup.com
+CPANEL_FTP_USERNAME=shilfmfe
+CPANEL_FTP_PASSWORD=wxbr7!ANf{9u
+CPANEL_SERVER_DIR=./public_html/admin.shilpgroup.com/
 ```
 
 ### Optional Secrets (recommended):
 ```
-CPANEL_SERVER_DIR=./public_html/
+CPANEL_SERVER_DIR=./public_html/admin.shilpgroup.com/
 VITE_API_BASE_URL=https://backend.shilpgroup.com
 VITE_IMAGE_BASE_URL=https://admin.shilpgroup.com
 ```

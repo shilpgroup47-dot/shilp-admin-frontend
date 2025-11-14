@@ -69,7 +69,7 @@ jobs:
         username: ${{ secrets.CPANEL_FTP_USERNAME }}
         password: ${{ secrets.CPANEL_FTP_PASSWORD }}
         local-dir: ./dist/
-        server-dir: ${{ secrets.CPANEL_SERVER_DIR || './public_html/' }}
+        server-dir: ${{ secrets.CPANEL_SERVER_DIR || './public_html/admin.shilpgroup.com/' }}
         exclude: |
           **/.git*
           **/.git*/**
