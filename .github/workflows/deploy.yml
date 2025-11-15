@@ -1,4 +1,4 @@
-name: 🚀 Build and Deploy to cPanel
+name: 🚀 Production Deploy to cPanel
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    name: 📦 Build & Deploy to cPanel
+  deploy-production:
+    name: 📦 Build & Deploy Production
     runs-on: ubuntu-latest
     
     steps:
-    - name: 📥 Checkout Repository
+    - name: 📥 Checkout Code
       uses: actions/checkout@v4
     
     - name: 🔧 Setup Node.js 18
@@ -21,26 +21,20 @@ jobs:
         cache: 'npm'
     
     - name: 📦 Install Dependencies
-      run: |
-        echo "📦 Installing dependencies..."
-        npm ci
+      run: npm ci --production=false
     
-    - name: 🏗️ Build Project for Production
-      run: |
-        echo "🏗️ Building project..."
-        npm run build:prod
-        echo "✅ Build completed successfully!"
-        ls -la dist/
+    - name: 🏗️ Build for Production
+      run: npm run build:prod
       env:
         NODE_ENV: production
-        VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || 'https://backend.shilpgroup.com' }}
-        VITE_IMAGE_BASE_URL: ${{ secrets.VITE_IMAGE_BASE_URL || 'https://admin.shilpgroup.com' }}
+        VITE_API_BASE_URL: https://backend.shilpgroup.com
+        VITE_IMAGE_BASE_URL: https://admin.shilpgroup.com
         VITE_APP_NAME: "Shilp Admin Panel"
         VITE_APP_VERSION: "1.0.0"
+        VITE_DEBUG_IMAGES: false
     
-    - name: 📋 Verify Build Output
+    - name: ✅ Verify Build
       run: |
-        echo "📋 Verifying build files..."
         if [ ! -f "dist/index.html" ]; then
           echo "❌ Build failed - index.html not found"
           exit 1
@@ -49,49 +43,31 @@ jobs:
           echo "❌ .htaccess file missing"
           exit 1
         fi
-        echo "✅ All required files present"
-        echo "📁 Build size: $(du -sh dist/)"
-        echo "📄 Files in dist:"
-        find dist/ -type f | sort
+        echo "✅ Production build verified successfully"
+        echo "� Build size: $(du -sh dist/)"
     
-    - name: 🗜️ Create Deployment Archive
-      run: |
-        echo "🗜️ Creating deployment archive..."
-        cd dist/
-        zip -r ../deployment.zip . -x "*.DS_Store" "*Thumbs.db"
-        cd ..
-        echo "✅ Archive created: $(du -sh deployment.zip)"
-    
-    - name: 🚀 Deploy to cPanel via FTP
+    - name: � Deploy to Production cPanel
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{ secrets.CPANEL_FTP_SERVER }}
-        username: ${{ secrets.CPANEL_FTP_USERNAME }}
-        password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+        server: ftp.shilpgroup.com
+        username: shilfmfe
+        password: wxbr7!ANf{9u
         local-dir: ./dist/
-        server-dir: ${{ secrets.CPANEL_SERVER_DIR || '/' }}
+        server-dir: ./public_html/admin.shilpgroup.com/
         exclude: |
           **/.git*
-          **/.git*/**
-          **/node_modules/**
           **/.env*
           **/.DS_Store
-          **/Thumbs.db
-          **/desktop.ini
-        log-level: verbose
-        
-    - name: 🎉 Deployment Success
+          **/node_modules/**
+        log-level: minimal
+    - name: 🎉 Production Deployed
       run: |
-        echo "🎉 Deployment completed successfully!"
-        echo "🌐 Your app should be live at: https://your-domain.com"
-        echo "📊 Deployment Summary:"
-        echo "   - Source: main branch"
-        echo "   - Files deployed: dist/ folder contents"
-        echo "   - Target: cPanel public_html"
-        echo "   - Status: ✅ SUCCESS"
-    
-    - name: 📱 Notify on Failure
+        echo "🎉 Production deployment completed!"
+        echo "🌐 Live at: https://admin.shilpgroup.com"
+        echo "📊 Status: ✅ SUCCESS"
+        
+    - name: ❌ Deployment Failed
       if: failure()
       run: |
-        echo "❌ Deployment failed!"
-        echo "Please check the logs above for details."
+        echo "❌ Production deployment failed!"
+        echo "Please check logs for details"

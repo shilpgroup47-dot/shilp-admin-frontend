@@ -5,7 +5,7 @@ import type { AxiosRequestConfig } from 'axios';
 // Dynamic URL detection based on environment and access method
 const getBaseUrl = (): string => {
   // Production environment - Use environment variable
-  if (import.meta.env.PROD) {
+  if (import.meta.env.PROD || import.meta.env.NODE_ENV === 'production') {
     return import.meta.env.VITE_API_BASE_URL || 'https://backend.shilpgroup.com';
   }
   
@@ -40,7 +40,7 @@ export const getImageUrl = (imagePath: string): string => {
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
   
   // Production environment - Use environment variable
-  if (import.meta.env.PROD) {
+  if (import.meta.env.PROD || import.meta.env.NODE_ENV === 'production') {
     return `${import.meta.env.VITE_IMAGE_BASE_URL || 'https://admin.shilpgroup.com'}${cleanPath}`;
   }
   
