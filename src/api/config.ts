@@ -2,51 +2,21 @@
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 
-// Dynamic URL detection based on environment and access method
+// Simple URL configuration
 const getBaseUrl = (): string => {
-  // Production environment - Use environment variable
-  if (import.meta.env.PROD || import.meta.env.NODE_ENV === 'production') {
-    return import.meta.env.VITE_API_BASE_URL || 'https://backend.shilpgroup.com';
-  }
-  
-  // Development environment - Dynamic detection
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    const protocol = window.location.protocol;
-    
-    // If accessing via network IP, use network IP for API
-    if (hostname === '192.168.2.143' || hostname.includes('192.168')) {
-      return `${protocol}//${hostname}:8081`;
-    }
-    
-    // If accessing via localhost, use localhost for API
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return `${protocol}//localhost:8081`;
-    }
-    
-    // Fallback for other scenarios
-    return `${protocol}//${hostname}:8081`;
-  }
-  
-  // Server-side rendering fallback
-  return 'http://localhost:8081';
+  // Always use production API URL
+  return 'https://backend.shilpgroup.com';
 };
 
-// Dynamic image URL generator
+// Simple image URL generator
 export const getImageUrl = (imagePath: string): string => {
   if (!imagePath) return '';
   
   // Remove leading slash if present
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
   
-  // Production environment - Use environment variable
-  if (import.meta.env.PROD || import.meta.env.NODE_ENV === 'production') {
-    return `${import.meta.env.VITE_IMAGE_BASE_URL || 'https://admin.shilpgroup.com'}${cleanPath}`;
-  }
-  
-  // Development environment - match API base URL
-  const baseUrl = getBaseUrl();
-  return `${baseUrl}${cleanPath}`;
+  // Always use production image URL
+  return `https://admin.shilpgroup.com${cleanPath}`;
 };
 
 export const API_CONFIG = {
