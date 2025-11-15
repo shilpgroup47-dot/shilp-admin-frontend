@@ -29,7 +29,7 @@ export const API_CONFIG = {
       PROFILE: '/api/admin/profile',
     },
   },
-  TIMEOUT: 10000, // 10 seconds
+  TIMEOUT: 30000, // 30 seconds for better connectivity
 } as const;
 
 // API response types
@@ -62,22 +62,33 @@ export const httpClient = {
     const url = `${API_CONFIG.BASE_URL}${endpoint}`;
     const defaultHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
       ...Object.fromEntries(Object.entries(options.headers || {}).map(([k, v]) => [k, v ?? ''])),
     };
+    
     // Add admin token if available
     const adminToken = localStorage.getItem('adminToken');
     if (adminToken) {
       defaultHeaders['Authorization'] = `Bearer ${adminToken}`;
     }
+    
+    console.log('🔗 Making API request to:', url);
+    
     try {
       const axiosConfig: AxiosRequestConfig = {
         url,
-        method: options.method,
+        method: options.method || 'GET',
         headers: defaultHeaders,
         data: options.data,
         timeout: API_CONFIG.TIMEOUT,
+        withCredentials: false,
       };
+      
       const response = await axios.request<ApiResponse<T>>(axiosConfig);
+      
+      console.log('✅ API Response received:', response.status);
+      
       if (!response.data.success) {
         throw new ApiError(
           response.data.error?.message || response.data.message || 'Request failed',
@@ -87,20 +98,60 @@ export const httpClient = {
       }
       return response.data;
   } catch (error: unknown) {
+      console.error('❌ API Request failed:', error);
+      
       if (error instanceof ApiError) {
         throw error;
       }
+      
       if (axios.isAxiosError(error)) {
+        console.error('🌐 Axios Error Details:', {
+          code: error.code,
+          message: error.message,
+          status: error.response?.status,
+          url: error.config?.url
+        });
+        
         if (error.code === 'ECONNABORTED') {
-          throw new ApiError('Request timeout', 408, 'TIMEOUT');
+          throw new ApiError(
+            'Connection timeout - Please check your internet connection and try again', 
+            408, 
+            'TIMEOUT'
+          );
         }
+        
+        if (error.code === 'ERR_NETWORK') {
+          throw new ApiError(
+            'Network error - Unable to connect to server', 
+            0, 
+            'NETWORK_ERROR'
+          );
+        }
+        
+        if (error.response?.status === 404) {
+          throw new ApiError(
+            'API endpoint not found', 
+            404, 
+            'NOT_FOUND'
+          );
+        }
+        
+        if (error.response?.status === 500) {
+          throw new ApiError(
+            'Server error - Please try again later', 
+            500, 
+            'SERVER_ERROR'
+          );
+        }
+        
         throw new ApiError(
-          error.response?.data?.error?.message || error.message || 'Network error',
+          error.response?.data?.error?.message || error.message || 'Network connection failed',
           error.response?.status || 0,
           error.response?.data?.error?.code || 'NETWORK_ERROR'
         );
       }
-      throw new ApiError('Network error', 0, 'NETWORK_ERROR');
+      
+      throw new ApiError('Unexpected error occurred', 0, 'UNKNOWN_ERROR');
     }
   },
 
