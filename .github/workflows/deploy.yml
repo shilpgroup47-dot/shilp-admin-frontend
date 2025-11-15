@@ -49,11 +49,11 @@ jobs:
     - name: � Deploy to Production cPanel
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ftp.shilpgroup.com
-        username: shilfmfe
-        password: wxbr7!ANf{9u
+        server: ${{ secrets.CPANEL_FTP_SERVER }}
+        username: ${{ secrets.CPANEL_FTP_USERNAME }}
+        password: ${{ secrets.CPANEL_FTP_PASSWORD }}
         local-dir: ./dist/
-        server-dir: ./public_html/admin.shilpgroup.com/
+        server-dir: ./
         exclude: |
           **/.git*
           **/.env*
